@@ -1,0 +1,41 @@
+# ---------------------------------------------------------------
+# Godot 4
+# ---------------------------------------------------------------
+# Editor cache and imported assets (regenerated on project open)
+.godot/
+**/.godot/
+
+# Legacy Godot 3 import folder
+.import/
+**/.import/
+
+# Godot-specific temporary files
+*.tmp
+*.translation
+
+# Mono / C# build artifacts
+.mono/
+**/.mono/
+data_*/
+mono_crash.*.json
+*.csproj.user
+
+# ---------------------------------------------------------------
+# OS files
+# ---------------------------------------------------------------
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+
+# ---------------------------------------------------------------
+# Source art working files (optional – remove if you want them tracked)
+# ---------------------------------------------------------------
+*.blend1
+*.blend2
+
+# ---------------------------------------------------------------
+# Python (helper scripts in tools/)
+# ---------------------------------------------------------------
+__pycache__/
+*.pyc
