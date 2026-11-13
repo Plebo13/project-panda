@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://ds1rc7t7kap7g"]
+
+[ext_resource type="PackedScene" uid="uid://bnu6j4e4pwdyx" path="res://assets/paths/gravel/gravel.glb" id="1_k6t24"]
+[ext_resource type="PackedScene" uid="uid://d2oh5haj5b31b" path="res://assets/terrain/grass/grass.glb" id="2_d6bvg"]
+
+[node name="Node3D" type="Node3D" unique_id=1908249909]
+
+[node name="gravel" parent="." unique_id=1093277484 instance=ExtResource("1_k6t24")]
+
+[node name="grass" parent="." unique_id=1931358576 instance=ExtResource("2_d6bvg")]

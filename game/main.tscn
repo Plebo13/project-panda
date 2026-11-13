@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://b324jb1oitjbo"]
+
+[ext_resource type="MeshLibrary" uid="uid://x62j2161327v" path="res://mesh-libs/tiles.tres" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://by7ibwbylssus" path="res://scripts/grid_map.gd" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://bqxdq5a0b1eiu" path="res://scripts/camera_rig.gd" id="3_h2yge"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ig7tw"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_0xm2m"]
+sky_material = SubResource("ProceduralSkyMaterial_ig7tw")
+
+[sub_resource type="Environment" id="Environment_h2yge"]
+background_mode = 2
+sky = SubResource("Sky_0xm2m")
+glow_enabled = true
+
+[node name="Main" type="Node3D" unique_id=1021601707]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1156316796]
+environment = SubResource("Environment_h2yge")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=472889697]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="GridMap" type="GridMap" parent="." unique_id=1129504301]
+mesh_library = ExtResource("1_ig7tw")
+cell_size = Vector3(3, 0.5, 3)
+script = ExtResource("2_0xm2m")
+metadata/_editor_floor_ = Vector3(0, 0, 0)
+
+[node name="CameraRig" type="Node3D" parent="." unique_id=383590355]
+script = ExtResource("3_h2yge")
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig" unique_id=1353886516]
