@@ -1,24 +1,29 @@
 # ---------------------------------------------------------------
 # Godot 4
 # ---------------------------------------------------------------
-# Editor cache and imported assets (regenerated on project open)
+# Editor cache and imported assets (regenerated on project open).
+# Patterns without a leading slash match at any depth.
 .godot/
-**/.godot/
-
-# Legacy Godot 3 import folder
 .import/
-**/.import/
-
-# Godot-specific temporary files
 *.tmp
 *.translation
 
-# Mono / C# build artifacts
-.mono/
-**/.mono/
-data_*/
-mono_crash.*.json
-*.csproj.user
+# Android build template and export output
+/game/android/
+/builds/
+
+# ---------------------------------------------------------------
+# Blender
+# ---------------------------------------------------------------
+# Backup versions (.blend1 ... .blend32) and temporary save files
+*.blend[0-9]*
+*.blend@
+
+# ---------------------------------------------------------------
+# Editors
+# ---------------------------------------------------------------
+.vscode/
+.idea/
 
 # ---------------------------------------------------------------
 # OS files
@@ -27,15 +32,3 @@ mono_crash.*.json
 ._*
 Thumbs.db
 Desktop.ini
-
-# ---------------------------------------------------------------
-# Source art working files (optional – remove if you want them tracked)
-# ---------------------------------------------------------------
-*.blend1
-*.blend2
-
-# ---------------------------------------------------------------
-# Python (helper scripts in tools/)
-# ---------------------------------------------------------------
-__pycache__/
-*.pyc
