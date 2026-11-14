@@ -14,12 +14,20 @@ func _ready():
 			set_cell_item(Vector3i(x, 0, z), item)
 
 func _unhandled_input(event):
-	var grass := mesh_library.find_item_by_name("Grass")
-	var gravel := mesh_library.find_item_by_name("Gravel")
-
-	# Only react to the left mouse button being pressed (not released)
-	if not (event is InputEventMouseButton and event.pressed and (event.button_index == MOUSE_BUTTON_LEFT or event.button_index == MOUSE_BUTTON_RIGHT)):
+	# Only react to mouse buttons being pressed (not released)
+	if not (event is InputEventMouseButton and event.pressed):
 		return
+
+	# Pick the tile to place: left click lays gravel, right click restores grass.
+	# Any other button (e.g. the mouse wheel) is ignored.
+	var tile_name: String
+	match event.button_index:
+		MOUSE_BUTTON_LEFT:
+			tile_name = "Gravel"
+		MOUSE_BUTTON_RIGHT:
+			tile_name = "Grass"
+		_:
+			return
 
 	var cam := get_viewport().get_camera_3d()
 	if cam == null:
@@ -36,9 +44,8 @@ func _unhandled_input(event):
 
 	# Convert the world position to a grid cell
 	var cell := local_to_map(to_local(hit))
+	if get_cell_item(cell) == INVALID_CELL_ITEM:
+		return
 
-	# Replace grass with gravel
-	if event.button_index == MOUSE_BUTTON_LEFT:
-		set_cell_item(cell, gravel)
-	elif event.button_index == MOUSE_BUTTON_RIGHT:
-		set_cell_item(cell, grass)
+	# Replace the clicked tile with the chosen one
+	set_cell_item(cell, mesh_library.find_item_by_name(tile_name))
