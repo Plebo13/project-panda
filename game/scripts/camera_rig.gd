@@ -9,14 +9,17 @@ extends Node3D
 @export var min_distance := 5.0
 @export var max_distance := 200.0
 
-var yaw := 0.0          # Horizontal rotation around the Y axis (radians)
-var pitch := -0.8       # Vertical tilt, negative = looking down (radians)
-var distance := 60.0    # Distance between the camera and the pivot
+@export var grid: GridMap
+
+var yaw := 0.0 # Horizontal rotation around the Y axis (radians)
+var pitch := -0.6 # Vertical tilt, negative = looking down (radians)
+var distance := 15.0 # Distance between the camera and the pivot
 
 @onready var cam: Camera3D = $Camera3D
 
 
 func _ready():
+	# grid.cell_size
 	_update_camera()
 
 
@@ -35,7 +38,15 @@ func _process(delta):
 		var speed := move_speed * (distance / 40.0)
 		global_position += flat_basis * dir.normalized() * speed * delta
 
+	# Rotating the camera using Q or E
+	if Input.is_physical_key_pressed(KEY_Q):
+		yaw -= 0.05
+		_update_camera()
+	elif Input.is_physical_key_pressed(KEY_E):
+		yaw += 0.05
+		_update_camera()
 
+	
 func _unhandled_input(event):
 	# Rotate the view while the middle mouse button is held down
 	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):

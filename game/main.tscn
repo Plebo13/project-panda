@@ -27,7 +27,7 @@ shadow_enabled = true
 
 [node name="GridMap" type="GridMap" parent="." unique_id=1129504301]
 mesh_library = ExtResource("1_ig7tw")
-cell_size = Vector3(3, 0.5, 3)
+cell_size = Vector3(3, 0.1, 3)
 script = ExtResource("2_0xm2m")
 metadata/_editor_floor_ = Vector3(0, 0, 0)
 
