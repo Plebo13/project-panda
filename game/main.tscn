@@ -3,6 +3,7 @@
 [ext_resource type="MeshLibrary" uid="uid://x62j2161327v" path="res://mesh-libs/tiles.tres" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://by7ibwbylssus" path="res://scripts/grid_map.gd" id="2_0xm2m"]
 [ext_resource type="Script" uid="uid://bqxdq5a0b1eiu" path="res://scripts/camera_rig.gd" id="3_h2yge"]
+[ext_resource type="Script" uid="uid://y6l00s413txx" path="res://scripts/build_controller.gd" id="4_1bvp3"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ig7tw"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -35,3 +36,7 @@ metadata/_editor_floor_ = Vector3(0, 0, 0)
 script = ExtResource("3_h2yge")
 
 [node name="Camera3D" type="Camera3D" parent="CameraRig" unique_id=1353886516]
+
+[node name="BuildController" type="Node" parent="." unique_id=741481883 node_paths=PackedStringArray("grid")]
+script = ExtResource("4_1bvp3")
+grid = NodePath("../GridMap")

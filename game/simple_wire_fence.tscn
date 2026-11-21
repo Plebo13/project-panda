@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://c3htityxcmc2w"]
+
+[ext_resource type="PackedScene" uid="uid://bm0ns078i0aeb" path="res://assets/fences/simple-wire/simple-wire.glb" id="1_om404"]
+
+[node name="SimpleWireFence" type="Node3D" unique_id=978807239]
+
+[node name="simple-wire" parent="." unique_id=339071600 instance=ExtResource("1_om404")]
