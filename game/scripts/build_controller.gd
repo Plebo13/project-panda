@@ -1,31 +1,18 @@
 extends Node
 
-@export var grid: GridMap
+@export var grid: TileGrid
+@export var fences: Fences
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+enum Tool {TILE, FENCE}
+var current_tool := Tool.TILE
 
+func set_tool(tool: Tool) -> void:
+	current_tool = tool
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-	
 func _unhandled_input(event):
 	# Only react to mouse buttons being pressed (not released)
 	if not (event is InputEventMouseButton and event.pressed):
 		return
-
-	# Pick the tile to place: left click lays gravel, right click restores grass.
-	# Any other button (e.g. the mouse wheel) is ignored.
-	var tile_name: String
-	match event.button_index:
-		MOUSE_BUTTON_LEFT:
-			tile_name = "Gravel"
-		MOUSE_BUTTON_RIGHT:
-			tile_name = "Grass"
-		_:
-			return
 
 	var cam := get_viewport().get_camera_3d()
 	if cam == null:
@@ -40,6 +27,52 @@ func _unhandled_input(event):
 	if hit == null:
 		return
 
+	match current_tool:
+		Tool.TILE:
+			_handle_tile(event, hit)
+		Tool.FENCE:
+			_handle_fence(event, hit)
+
+	
+func _handle_tile(event, hit: Vector3):
+	# Pick the tile to place: left click lays gravel, right click restores grass.
+	# Any other button (e.g. the mouse wheel) is ignored.
+	var tile_name: String
+	match event.button_index:
+		MOUSE_BUTTON_LEFT:
+			tile_name = "Gravel"
+		MOUSE_BUTTON_RIGHT:
+			tile_name = "Grass"
+		_:
+			return
+
 	# Convert the world position to a grid cell
 	var cell := grid.local_to_map(grid.to_local(hit))
 	grid.set_tile(cell, tile_name)
+
+func _handle_fence(event, hit: Vector3):
+	var edge := _pick_edge(hit)
+	match event.button_index:
+		MOUSE_BUTTON_LEFT:
+			fences.place(edge)
+		MOUSE_BUTTON_RIGHT:
+			fences.remove(edge)
+
+
+# Find the tile edge closest to a point on the ground.
+# Returns Vector3i(x, z, axis), see fences.gd for the format.
+func _pick_edge(hit: Vector3) -> Vector3i:
+	# Convert to grid units: cell (0, 0) covers 0..1 on both axes
+	var local := grid.to_local(hit)
+	var fx := local.x / grid.cell_size.x
+	var fz := local.z / grid.cell_size.z
+
+	# Distance to the nearest vertical (x) and horizontal (z) grid line
+	var dx := absf(fx - roundf(fx))
+	var dz := absf(fz - roundf(fz))
+
+	if dx < dz:
+		# Closer to a line x = const: the edge runs along Z
+		return Vector3i(roundi(fx), floori(fz), Fences.AXIS_Z)
+	# Closer to a line z = const: the edge runs along X
+	return Vector3i(floori(fx), roundi(fz), Fences.AXIS_X)

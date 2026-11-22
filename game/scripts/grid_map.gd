@@ -1,4 +1,4 @@
-extends GridMap
+class_name TileGrid extends GridMap
 
 @export var size := Vector2i(100, 100)
 @export var item_name := "Grass"

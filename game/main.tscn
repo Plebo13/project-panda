@@ -4,6 +4,8 @@
 [ext_resource type="Script" uid="uid://by7ibwbylssus" path="res://scripts/grid_map.gd" id="2_0xm2m"]
 [ext_resource type="Script" uid="uid://bqxdq5a0b1eiu" path="res://scripts/camera_rig.gd" id="3_h2yge"]
 [ext_resource type="Script" uid="uid://y6l00s413txx" path="res://scripts/build_controller.gd" id="4_1bvp3"]
+[ext_resource type="Script" uid="uid://y8u3fdpwrs8o" path="res://scripts/fences.gd" id="5_7mycd"]
+[ext_resource type="PackedScene" uid="uid://c3htityxcmc2w" path="res://simple_wire_fence.tscn" id="6_272bh"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ig7tw"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -16,6 +18,9 @@ sky_material = SubResource("ProceduralSkyMaterial_ig7tw")
 background_mode = 2
 sky = SubResource("Sky_0xm2m")
 glow_enabled = true
+
+[sub_resource type="ButtonGroup" id="ButtonGroup_t0yej"]
+resource_name = "BuildButtonGroup"
 
 [node name="Main" type="Node3D" unique_id=1021601707]
 
@@ -37,6 +42,39 @@ script = ExtResource("3_h2yge")
 
 [node name="Camera3D" type="Camera3D" parent="CameraRig" unique_id=1353886516]
 
-[node name="BuildController" type="Node" parent="." unique_id=741481883 node_paths=PackedStringArray("grid")]
+[node name="BuildController" type="Node" parent="." unique_id=741481883 node_paths=PackedStringArray("grid", "fences")]
 script = ExtResource("4_1bvp3")
 grid = NodePath("../GridMap")
+fences = NodePath("../Fences")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1966771931]
+
+[node name="BuildMenu" type="PanelContainer" parent="CanvasLayer" unique_id=281417864]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -40.0
+offset_right = 40.0
+grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/BuildMenu" unique_id=1785286063]
+layout_mode = 2
+
+[node name="TileButton" type="Button" parent="CanvasLayer/BuildMenu/HBoxContainer" unique_id=1871959684]
+layout_mode = 2
+toggle_mode = true
+button_pressed = true
+button_group = SubResource("ButtonGroup_t0yej")
+
+[node name="FenceButton" type="Button" parent="CanvasLayer/BuildMenu/HBoxContainer" unique_id=66429894]
+layout_mode = 2
+toggle_mode = true
+button_group = SubResource("ButtonGroup_t0yej")
+
+[node name="Fences" type="Node3D" parent="." unique_id=340494134 node_paths=PackedStringArray("grid")]
+script = ExtResource("5_7mycd")
+fence_scene = ExtResource("6_272bh")
+grid = NodePath("../GridMap")
+
+[connection signal="pressed" from="CanvasLayer/BuildMenu/HBoxContainer/TileButton" to="BuildController" method="set_tool" binds= [0]]
+[connection signal="pressed" from="CanvasLayer/BuildMenu/HBoxContainer/FenceButton" to="BuildController" method="set_tool" binds= [1]]
