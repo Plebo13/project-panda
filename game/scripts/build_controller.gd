@@ -18,6 +18,7 @@ func _process(_delta):
 	# Calculate potential build ghost position
 	var hit = _mouse_to_ground(get_viewport().get_mouse_position())
 	if hit == null:
+		fences.hide_ghost()
 		return
 
 	fences.show_ghost(_pick_edge(hit))
@@ -29,7 +30,6 @@ func _unhandled_input(event):
 
 	var hit = _mouse_to_ground(event.position)
 	if hit == null:
-		fences.hide_ghost()
 		return
 
 	match current_tool:
