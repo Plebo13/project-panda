@@ -14,7 +14,20 @@ const AXIS_Z := 1
 
 # Edge key (Vector3i) -> fence node (Node3D)
 var _fences := {}
+var _ghost: Node3D
 
+func _ready():
+	_ghost = fence_scene.instantiate()
+	var transparent := StandardMaterial3D.new()
+	transparent.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	transparent.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	transparent.albedo_color = Color(0.3, 1.0, 0.3, 0.5)
+
+	for mesh_instance in _ghost.find_children("*", "MeshInstance3D", true, false):
+		mesh_instance.material_override = transparent
+
+	add_child(_ghost)
+	_ghost.visible = false
 
 func place(edge: Vector3i) -> bool:
 	if not is_valid_edge(edge) or has_fence(edge):
@@ -30,6 +43,23 @@ func place(edge: Vector3i) -> bool:
 
 	_fences[edge] = fence
 	return true
+
+func show_ghost(edge: Vector3i) -> bool:
+	if not is_valid_edge(edge):
+		hide_ghost()
+		return false
+
+	# The model runs along X. A Z-edge needs a quarter turn around Y.
+	if edge.z == AXIS_Z:
+		_ghost.rotation.y = PI / 2
+	# edge_to_world returns grid-local coordinates. Convert them to this node's space.
+	_ghost.position = to_local(grid.to_global(edge_to_world(edge)))
+	_ghost.rotation.y = PI / 2 if edge.z == AXIS_Z else 0.0
+	_ghost.visible = true
+	return true
+
+func hide_ghost():
+	_ghost.visible = false
 
 
 func remove(edge: Vector3i) -> bool:
